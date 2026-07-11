@@ -61,7 +61,7 @@ dotnet build --configuration Release
 
 - Sparroh
 - Generally Break (Efficient encoding)
-- funlennysub (Original hex grid / sharing work in Enhanced Upgrade Menu)
+- funlennysub (Original hex grid)
 
 ## License
 
