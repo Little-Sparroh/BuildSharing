@@ -15,7 +15,15 @@ public class SharingButtons : MonoBehaviour
 
     private void OnEnable()
     {
+        // Keep a live instance so static bar handlers can resolve the open window.
+        _active = this;
         RegisterBar();
+    }
+
+    private void OnDisable()
+    {
+        if (_active == this)
+            _active = null;
     }
 
     private void Update()
@@ -27,28 +35,39 @@ public class SharingButtons : MonoBehaviour
             window = Menu.Instance.WindowSystem.GetTop() as GearDetailsWindow;
 
         if (GearActionBar.IsGearMenuOpen())
+        {
+            _active = this;
             RegisterBar();
+        }
     }
+
+    private static SharingButtons _active;
 
     private void RegisterBar()
     {
-        // Static so only one pair of slots exists even with multiple components
+        // Register once; click handlers resolve the current window at invoke time.
         if (_barRegistered)
-        {
-            // Re-bind clicks to this instance's methods (current window)
-            GearActionBar.Register("copy_grid", "Copy Grid", GearActionBar.OrderCopyGrid, CopyGridToClipboard, UIButtonStyle.Primary);
-            GearActionBar.Register("paste_code", "Paste Code", GearActionBar.OrderPasteCode, PasteCodeFromClipboard, UIButtonStyle.Default);
-            GearActionBar.SetSlotVisible("copy_grid", true);
-            GearActionBar.SetSlotVisible("paste_code", true);
             return;
-        }
 
-        GearActionBar.Register("copy_grid", "Copy Grid", GearActionBar.OrderCopyGrid, CopyGridToClipboard, UIButtonStyle.Primary);
-        GearActionBar.Register("paste_code", "Paste Code", GearActionBar.OrderPasteCode, PasteCodeFromClipboard, UIButtonStyle.Default);
+        GearActionBar.Register("copy_grid", "Copy Grid", GearActionBar.OrderCopyGrid, StaticCopyGrid, UIButtonStyle.Primary);
+        GearActionBar.Register("paste_code", "Paste Code", GearActionBar.OrderPasteCode, StaticPasteCode, UIButtonStyle.Default);
         GearActionBar.SetSlotVisible("copy_grid", true);
         GearActionBar.SetSlotVisible("paste_code", true);
         _barRegistered = true;
     }
+
+    private static void StaticCopyGrid()
+    {
+        var host = _active ?? UnityEngine.Object.FindObjectOfType<SharingButtons>();
+        host?.CopyGridToClipboard();
+    }
+
+    private static void StaticPasteCode()
+    {
+        var host = _active ?? UnityEngine.Object.FindObjectOfType<SharingButtons>();
+        host?.PasteCodeFromClipboard();
+    }
+
 
     void CopyGridToClipboard()
     {
