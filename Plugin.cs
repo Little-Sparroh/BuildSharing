@@ -9,7 +9,7 @@ public class BuildSharingPlugin : BaseUnityPlugin
 {
     public const string PluginGUID = "sparroh.buildsharing";
     public const string PluginName = "BuildSharing";
-    public const string PluginVersion = "1.0.0";
+    public const string PluginVersion = "1.0.1";
 
     internal static ManualLogSource Logger;
     public static BuildSharingPlugin Instance;

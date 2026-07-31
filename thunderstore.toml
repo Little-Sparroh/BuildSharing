@@ -19,7 +19,7 @@ readme = "README.md"
 outdir = "build"
 
 [[build.copy]]
-source = "bin/Release/net48/BuildSharing.dll"
+source = "bin/Release/netstandard2.1/BuildSharing.dll"
 target = "BepInEx/plugins/BuildSharing.dll"
 
 [[build.copy]]
@@ -32,7 +32,7 @@ target = "LICENSE"
 
 [publish]
 repository = "https://thunderstore.io"
-communities = [ "mycopunk" ]
+communities = ["mycopunk"]
 
 [publish.categories]
-mycopunk = [ "client" ]
+mycopunk = ["client"]

@@ -1,11 +1,10 @@
 ﻿using HarmonyLib;
-using UnityEngine;
 
 [HarmonyPatch(typeof(GearDetailsWindow), "Awake")]
 public static class GearDetailsWindow_Awake_Patch
 {
     [HarmonyPostfix]
-    static void Postfix(GearDetailsWindow __instance)
+    private static void Postfix(GearDetailsWindow __instance)
     {
         EnsureSharingButtons(__instance);
     }
@@ -14,10 +13,7 @@ public static class GearDetailsWindow_Awake_Patch
     {
         if (window == null) return;
         var existing = window.GetComponent<SharingButtons>();
-        if (existing == null)
-        {
-            existing = window.gameObject.AddComponent<SharingButtons>();
-        }
+        if (existing == null) existing = window.gameObject.AddComponent<SharingButtons>();
         existing.window = window;
     }
 }
@@ -26,7 +22,7 @@ public static class GearDetailsWindow_Awake_Patch
 public static class GearDetailsWindow_OnOpen_Patch
 {
     [HarmonyPostfix]
-    static void Postfix(GearDetailsWindow __instance)
+    private static void Postfix(GearDetailsWindow __instance)
     {
         GearDetailsWindow_Awake_Patch.EnsureSharingButtons(__instance);
     }
